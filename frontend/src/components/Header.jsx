@@ -1,15 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 export default function Header() {
   const { user, logout } = useContext(AuthContext);
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
     toast.success('Logged out successfully');
   };
+
+  // Check if path is active
+  const isActive = (path) => location.pathname === path;
 
   return (
     <header className="bg-purple-900 shadow-lg">
@@ -21,12 +25,16 @@ export default function Header() {
               alt="Q&A Platform Logo"
               className="h-8 w-auto"
             />
-            
           </Link>
         </div>
 
-        <div className="flex items-center space-x-6">
-          <Link to="/" className="text-purple-100 hover:text-white transition font-medium">
+        <div className="flex items-center space-x-4">
+          <Link
+            to="/"
+            className={`px-4 py-2 rounded-lg transition font-medium ${
+              isActive('/') ? 'bg-white text-purple-900' : 'text-purple-100 hover:text-white'
+            }`}
+          >
             Home
           </Link>
 
@@ -40,25 +48,34 @@ export default function Header() {
             <>
               <Link
                 to="/profile"
-                className="text-purple-100 hover:text-white transition font-medium"
+                className={`px-4 py-2 rounded-lg transition font-medium ${
+                  isActive('/profile') ? 'bg-white text-purple-900' : 'text-purple-100 hover:text-white'
+                }`}
               >
                 Profile
               </Link>
+
               <Link
                 to="/my-questions"
-                className="text-purple-100 hover:text-white transition font-medium"
+                className={`px-4 py-2 rounded-lg transition font-medium ${
+                  isActive('/my-questions') ? 'bg-white text-purple-900' : 'text-purple-100 hover:text-white'
+                }`}
               >
                 My Questions
               </Link>
+
               <Link
                 to="/ask"
-                className="bg-white text-purple-900 px-4 py-2 rounded-lg hover:bg-purple-100 transition font-medium"
+               className={`px-4 py-2 rounded-lg transition font-medium ${
+                  isActive('/ask') ? 'bg-white text-purple-900' : 'text-purple-100 hover:text-white'
+                }`}
               >
                 Ask Question
               </Link>
+
               <button
                 onClick={handleLogout}
-                className="text-purple-100 hover:text-white transition font-medium"
+                className="px-4 py-2 rounded-lg text-purple-100 hover:text-white font-medium transition"
               >
                 Logout
               </button>
@@ -67,13 +84,18 @@ export default function Header() {
             <>
               <Link
                 to="/login"
-                className="text-purple-100 hover:text-white transition font-medium"
+                className={`px-4 py-2 rounded-lg transition font-medium ${
+                  isActive('/login') ? 'bg-white text-purple-900' : 'text-purple-100 hover:text-white'
+                }`}
               >
                 Login
               </Link>
+
               <Link
                 to="/register"
-                className="bg-white text-purple-900 px-4 py-2 rounded-lg hover:bg-purple-100 transition font-medium"
+                className={`px-4 py-2 rounded-lg transition font-medium ${
+                  isActive('/register') ?  'bg-white text-purple-900' : 'text-purple-100 hover:text-white'
+                }`}
               >
                 Register
               </Link>

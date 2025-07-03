@@ -27,17 +27,25 @@ export const createQuestion = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Get all questions
+
 export const getAllQuestions = catchAsyncErrors(async (req, res, next) => {
-  const questions = await Question.find()
-    .populate('user', 'username')
+  const { title } = req.query;
+
+  let filter = {};
+  if (title) {
+    filter.title = { $regex: title, $options: 'i' }; // case-insensitive
+  }
+
+  const questions = await Question.find(filter)
+    .populate('user', 'username _id') // ✅ this line ensures frontend gets user info
     .sort({ createdAt: -1 });
 
   res.status(200).json({
     success: true,
-    message: "Questions fetched successfully",
     questions
   });
 });
+
 
 // Get single question with answers
 export const getQuestion = catchAsyncErrors(async (req, res, next) => {

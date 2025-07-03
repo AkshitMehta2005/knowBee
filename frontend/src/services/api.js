@@ -5,8 +5,13 @@ const API = axios.create({
   withCredentials: true,
 });
 
+// ✅ Cleaned up and merged fetchQuestions
+export const fetchQuestions = (title = '') => {
+  const query = title ? `?title=${encodeURIComponent(title)}` : '';
+  return API.get(`/question${query}`);
+};
+
 // Questions
-export const fetchQuestions = () => API.get('/question');
 export const fetchQuestion = (id) => API.get(`/question/${id}`);
 export const createQuestion = (questionData) => API.post('/question', questionData);
 export const updateQuestion = (id, questionData) => API.put(`/question/${id}`, questionData);
@@ -25,4 +30,4 @@ export const removeVote = (id) => API.delete(`/answer/${id}/vote`);
 export const register = (userData) => API.post('/user/register', userData);
 export const login = (userData) => API.post('/user/login', userData);
 export const logout = () => API.get('/user/logout');
-export const getCurrentUser = () => API.get('/user/me');
+export const getCurrentUser = () => API.get('/user/me');  
